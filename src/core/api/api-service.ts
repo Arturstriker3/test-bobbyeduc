@@ -1,7 +1,7 @@
-const urlBase = "#####";
+const urlBase = "https://reqres.in/api";
 
 const apiService = {
-    aaa: `${urlBase}`,
+    autentication: `${urlBase}`,
     bbb: `${urlBase}`,
     ccc: `${urlBase}`,
 }

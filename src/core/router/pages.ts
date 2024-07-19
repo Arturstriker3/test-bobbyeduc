@@ -21,7 +21,7 @@ router.beforeEach((to: any, _: any, next: any) => {
     const targetPage = interfacePages.find(page => page.path === to.path);
 
     if (targetPage && targetPage.showWhenAuth && !authStore.GetIsAuth) {
-        next('/');
+        next('/login');
     } else {
         next();
     }

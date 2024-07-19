@@ -25,10 +25,6 @@ const form = ref({
 const maxLengthToInputs = 50
 type FormField = 'email' | 'password';
 
-const goTo = (path: string) => {
-  router.push(path);
-};
-
 const submit = () => {
   isLoading.value = true;
   autenticationService.login({email: form.value.email, password: form.value.password})
@@ -82,17 +78,15 @@ onMounted(() => {
           <VaDivider />
         </div>
         <VaForm ref="formRef" class="flex flex-col w- gap-2">
-  
             <VaInput
                 v-model="form.email"
                 :rules="[validateEmail]"
                 label="Email"
                 :disabled="isLoading"
                 :max-length="50"
+                @input="truncateInput('email')"
                 counter
-
             />
-  
             <VaInput
                 v-model="form.password"
                 :type="isPasswordVisible ? 'text' : 'password'"
@@ -114,11 +108,7 @@ onMounted(() => {
             </VaInput>
   
             <div class="flex flex-row justify-between">
-              <VaButton :disabled="isLoading" preset="primary" @click="goTo('/')" class="w-28" >
-              Sair
-              </VaButton>
-  
-              <VaButton :disabled="!isValid || isLoading" @click="validate() && submit()" class="w-28">
+              <VaButton :disabled="!isValid || isLoading" @click="validate() && submit()" class="w-28 ml-auto">
                 <div>
                   <VaIcon v-if="isLoading" class="" name="refresh" spin />
                   <p v-else >Entrar</p>

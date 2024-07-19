@@ -1,11 +1,10 @@
-<script lang="ts" setup>
-
-import { onMounted } from 'vue';
-
-
+<script setup lang="ts">
+import Navbar from './components/navbar/navbar.vue';
 
 </script>
 
 <template>
-  <router-view></router-view>
+  <div>
+    <Navbar/>
+  </div>
 </template>

@@ -5,7 +5,6 @@ import usersCrud from "@/core/services/usersCrud";
 import { createToaster } from "@meforma/vue-toaster";
 import dateUtils from '@/core/utils/date.utils';
 import { useToast } from 'vuestic-ui'
-import { filter } from 'lodash';
 
 const toaster = createToaster();
 const { notify } = useToast()
@@ -33,7 +32,14 @@ type Card = {
 
 const cardsToShow = ref<Card[]>([]);
 
-const moreContent = ref(false);
+const currentPage = ref(1);
+const totalPages = ref(2);
+const resultsPerPage = ref(4);
+const resultsPerPageOptions = [
+    { label: '4', value: '4' },
+    { label: '8', value: '8' },
+    { label: '16', value: '16' },
+];
 
 const cardIdToDelete = ref('');
 const cardNameToDelete = ref('');
@@ -47,6 +53,11 @@ watch(form, () => {
   });
 });
 
+watch(resultsPerPage, () => {
+  currentPage.value = 1;
+  getData(currentPage.value);
+});
+
 const truncateInput = (field: FormField) => {
   if (form.value[field].length > maxLengthToInputs) {
     form.value[field] = form.value[field].substring(0, maxLengthToInputs);
@@ -57,15 +68,17 @@ const validateLength = (value: string) => {
   return value.length <= maxLengthToInputs || '';
 }
 
-const getData = () => {
+const getData = (page: number) => {
   isLoading.value = true;
-  usersCrud.getUsers({page: 1, per_page: 999999})
+  usersCrud.getUsers({page, per_page: resultsPerPage.value})
     .then((response) => {
-    cardsToShow.value = response.data.data
+        cardsToShow.value = response.data.data;
+        currentPage.value = response.data.page;
+        totalPages.value = response.data.total_pages;
     })
     .catch(() => {
         reset()
-        toaster.error('Falha ao carregar os cards.');
+        toaster.error('Falha ao carregar os usuários.');
     })
     .finally(() => {isLoading.value = false});
 }
@@ -89,7 +102,7 @@ const getData = () => {
 
 onMounted(() => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  getData()
+  getData(currentPage.value)
 });
 
 const openCardDeleteModalConfirm = (cardId: string, cardFirstName: string, cardLastName: string) => {
@@ -107,10 +120,14 @@ const filteredCards = computed(() => {
   );
 });
 
+const changePage = (page: number) => {
+  getData(page);
+}
+
 </script>
 
 <template>
-    <div class="flex flex-col w-screen h-screen px-10 py-4 gap-10" >
+    <div class="flex flex-col w-screen h-screen  py-4 gap-10" >
         <div class="flex justify-center items-center" >
             <VaCard class="mt-4 px-6 py-4 rounded-lg w-screen mx-auto" >
               <div class="flex flex-col items-center justify-center" >
@@ -119,8 +136,7 @@ const filteredCards = computed(() => {
               <div class="mb-6">
                 <VaDivider />
               </div>
-              <VaForm ref="formRef" class="flex flex-col w- gap-2">
-        
+              <VaForm ref="formRef" class="flex flex-col w-full gap-2">
                   <VaInput
                       v-model="form.cardText"
                       :rules="[validateLength]"
@@ -131,6 +147,27 @@ const filteredCards = computed(() => {
                       @input="truncateInput('cardText')"
                   />
               </VaForm>
+              <div class="flex justify-end my-2" >
+                <VaButtonToggle
+                    v-model="resultsPerPage"
+                    size="small"
+                    :options="resultsPerPageOptions"
+                />
+              </div>
+
+              <div class="flex justify-center items-center" >
+                <VaPagination
+                    v-model="currentPage"
+                    :pages=totalPages
+                    :visible-pages="3"
+                    buttons-preset="primary"
+                    rounded
+                    gapped
+                    border-color="primary"
+                    class="mb-6 justify-center sm:justify-start"
+                    @update:modelValue="changePage"
+                />
+              </div>
 
               <VaDivider />
 
@@ -167,7 +204,7 @@ const filteredCards = computed(() => {
                           <div class="flex items-center">
                               <p class="text-xs font-semibold text-black cursor-auto my-3">{{card.first_name}} {{card.last_name}}</p>
                               <div class="ml-auto">
-                                <div class="flex flex-row gap-1" >
+                                <div class="flex flex-row gap-4" >
                                     <VaButton
                                     round
                                     :disabled="!card.loaded || isDeletingCard"
@@ -197,18 +234,33 @@ const filteredCards = computed(() => {
                       </div>
                     </div>
                   </section>
+                  <VaDivider/>
+                <div class="flex justify-center items-center pt-4 pb-6" >
+                    <VaPagination
+                        v-if="resultsPerPage != 4"
+                        v-model="currentPage"
+                        :pages=totalPages
+                        :visible-pages="3"
+                        buttons-preset="primary"
+                        rounded
+                        gapped
+                        border-color="primary"
+                        class="mb-6 justify-center sm:justify-start"
+                        @update:modelValue="changePage"
+                    />
+                </div>
                 </VaCard>
               </div>
             </VaCard>
         </div>
         <VaModal
-        v-model="showDeleteModal"
-        ok-text="Confirmar"
-        cancel-text="Cancelar"
-        :message="deleteMessage"
-        blur
-        :mobileFullscreen=false
-        >
+            v-model="showDeleteModal"
+            ok-text="Confirmar"
+            cancel-text="Cancelar"
+            :message="deleteMessage"
+            blur
+            :mobileFullscreen=false
+            >
         </VaModal>
     </div>
 </template>

@@ -12,6 +12,10 @@ class userAutenticationService {
         const query = `?page=${page}&per_page=${per_page}`;
         return axiosInstance.get(`${this.urlBase}/users${query}`);
     }
+
+    deleteUser({ userId }: { userId: number; }) {
+        return axiosInstance.delete(`${this.urlBase}/users/${userId}`);
+    }
 }
 
 export default new userAutenticationService();

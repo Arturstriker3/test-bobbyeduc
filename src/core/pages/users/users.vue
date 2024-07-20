@@ -152,6 +152,7 @@ const changePage = (page: number) => {
                     v-model="resultsPerPage"
                     size="small"
                     :options="resultsPerPageOptions"
+                    :disabled="isLoading"
                 />
               </div>
 
@@ -166,6 +167,7 @@ const changePage = (page: number) => {
                     border-color="primary"
                     class="mb-6 justify-center sm:justify-start"
                     @update:modelValue="changePage"
+                    :disabled="isLoading"
                 />
               </div>
 
@@ -178,9 +180,9 @@ const changePage = (page: number) => {
               </div>
               
               <div v-else>
-                <VaCard class="mt-4 px-6 py-4 rounded-lg w-full mx-auto" >
-                  <section id="Projects"
-                  class="w-fit mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4   justify-items-center justify-center gap-y-16 gap-x-14 mb-10">
+                <VaCard class="px-6 py-4 rounded-lg w-full mx-auto" >
+                  <section id="Users"
+                  class="mt-10 w-fit mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4   justify-items-center justify-center gap-y-16 gap-x-14 mb-10">
                     <div v-for="card in filteredCards" :key="card.id" class="w-72 bg-slate-50 shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl border border-gray-300">
                       <div class="text-center py-2">
                         <p class="text-lg font-bold text-black truncate block capitalize">{{ card.first_name }}</p>
@@ -234,10 +236,8 @@ const changePage = (page: number) => {
                       </div>
                     </div>
                   </section>
-                  <VaDivider/>
-                <div class="flex justify-center items-center pt-4 pb-6" >
+                <div v-if="resultsPerPage != 4" class="flex justify-center items-center pt-4 pb-6" >
                     <VaPagination
-                        v-if="resultsPerPage != 4"
                         v-model="currentPage"
                         :pages=totalPages
                         :visible-pages="3"
@@ -247,6 +247,7 @@ const changePage = (page: number) => {
                         border-color="primary"
                         class="mb-6 justify-center sm:justify-start"
                         @update:modelValue="changePage"
+                        :disabled="isLoading"
                     />
                 </div>
                 </VaCard>

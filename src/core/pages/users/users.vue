@@ -11,7 +11,8 @@ const toaster = createToaster();
 const { notify } = useToast()
 
 const isLoading = ref(false);
-const isBuyingCard = ref(false);
+const isDeletingCard = ref(false);
+const showDeleteModal = ref(false);
 
 const { reset } = useForm('formRef')
 const maxLengthToInputs = 100
@@ -33,6 +34,13 @@ type Card = {
 const cardsToShow = ref<Card[]>([]);
 
 const moreContent = ref(false);
+
+const cardIdToDelete = ref('');
+const cardNameToDelete = ref('');
+
+const deleteMessage = computed(() => 
+      `Você tem certeza que deseja deletar o usuário ${cardNameToDelete.value}? Essa ação não poderá ser desfeita.`
+    );
 
 watch(form, () => {
   (Object.keys(form.value) as FormField[]).forEach((field) => {
@@ -85,6 +93,12 @@ onMounted(() => {
   getData()
 });
 
+const openCardDeleteModalConfirm = (cardId: string, cardFirstName: string, cardLastName: string) => {
+  showDeleteModal.value = true;
+  cardIdToDelete.value = cardId;
+  cardNameToDelete.value = `${cardFirstName} ${cardLastName}`;
+}
+
 const filteredCards = computed(() => {
   const searchText = form.value.cardText.toLowerCase();
   return cardsToShow.value.filter(card => 
@@ -101,7 +115,7 @@ const filteredCards = computed(() => {
         <div class="flex justify-center items-center" >
             <VaCard class="mt-4 px-6 py-4 rounded-lg w-screen mx-auto" >
               <div class="flex flex-col items-center justify-center" >
-                <p class="text-center text-lg font-semibold" >Adquirir Cartas</p>
+                <p class="text-center text-lg font-semibold" >Usuários</p>
               </div>
               <div class="mb-6">
                 <VaDivider />
@@ -136,10 +150,10 @@ const filteredCards = computed(() => {
                         <p class="text-lg font-bold text-black truncate block capitalize">{{ card.first_name }}</p>
                       </div>
 
-                      <div class="flex gap-4">
+                      <div class="flex gap-4 object-cover">
                         <VaImage
-                          fit="contain"
-                          class="h-80 w-72 object-cover rounded-t-xl "
+                          fit="scale-down"
+                          class="h-60 w-72 object-cover rounded-t-xl"
                           :src="card.avatar"
                           lazy
                           @loaded="card.loaded = true"
@@ -151,23 +165,34 @@ const filteredCards = computed(() => {
                       </div>
                       
                       <div class="px-4 py-3 w-72">
-                          <div class="min-h-36 text-justify" >
-                            <span class="text-gray-400 mr-3 uppercase text-xs">{{card.last_name}}</span>
-                          </div>
-                          
                           <div class="flex items-center">
-                              <p class="text-xs font-semibold text-black cursor-auto my-3">Detalhes</p>
+                              <p class="text-xs font-semibold text-black cursor-auto my-3">{{card.first_name}} {{card.last_name}}</p>
                               <div class="ml-auto">
-                                <VaButton
-                                  round
-                                  :disabled="!card.loaded || isBuyingCard"
-                                >
-                                  <VaIcon
-                                    :name="'add'"
-                                    color="#ffffff"
-                                    size="small"
-                                  />
-                                </VaButton>
+                                <div class="flex flex-row gap-1" >
+                                    <VaButton
+                                    round
+                                    :disabled="!card.loaded || isDeletingCard"
+                                    >
+                                    <VaIcon
+                                        :name="'edit'"
+                                        color="#ffffff"
+                                        size="small"
+                                    />
+                                    </VaButton>
+
+                                    <VaButton
+                                    round
+                                    color="danger"
+                                    :disabled="!card.loaded || isDeletingCard"
+                                    @click="openCardDeleteModalConfirm(card.id, card.first_name, card.last_name)"
+                                    >
+                                    <VaIcon
+                                        :name="'delete'"
+                                        color="#ffffff"
+                                        size="small"
+                                    />
+                                    </VaButton>
+                                </div>
                               </div>
                           </div>
                       </div>
@@ -177,5 +202,12 @@ const filteredCards = computed(() => {
               </div>
             </VaCard>
         </div>
+        <VaModal
+        v-model="showDeleteModal"
+        ok-text="Confirmar"
+        :message="deleteMessage"
+        blur
+        >
+        </VaModal>
     </div>
 </template>

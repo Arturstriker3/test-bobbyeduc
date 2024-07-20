@@ -37,10 +37,9 @@ const moreContent = ref(false);
 
 const cardIdToDelete = ref('');
 const cardNameToDelete = ref('');
-
 const deleteMessage = computed(() => 
-      `Você tem certeza que deseja deletar o usuário ${cardNameToDelete.value}? Essa ação não poderá ser desfeita.`
-    );
+    `Você tem certeza que deseja deletar o usuário ${cardNameToDelete.value}? Essa ação não poderá ser desfeita.`
+);
 
 watch(form, () => {
   (Object.keys(form.value) as FormField[]).forEach((field) => {
@@ -205,8 +204,10 @@ const filteredCards = computed(() => {
         <VaModal
         v-model="showDeleteModal"
         ok-text="Confirmar"
+        cancel-text="Cancelar"
         :message="deleteMessage"
         blur
+        :mobileFullscreen=false
         >
         </VaModal>
     </div>

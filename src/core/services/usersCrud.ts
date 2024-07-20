@@ -13,7 +13,7 @@ class userAutenticationService {
         return axiosInstance.get(`${this.urlBase}/users${query}`);
     }
 
-    deleteUser({ userId }: { userId: number; }) {
+    deleteUser(userId: string) {
         return axiosInstance.delete(`${this.urlBase}/users/${userId}`);
     }
 }

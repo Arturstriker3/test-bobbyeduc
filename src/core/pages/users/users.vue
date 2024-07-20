@@ -83,22 +83,23 @@ const getData = (page: number) => {
     .finally(() => {isLoading.value = false});
 }
 
-// const buyTheCard = (cardId: string) => {
-//   isBuyingCard.value = true;
-//   CardsService.buyTheCard(cardId)
-//     .then(() => {
-//       notify({
-//       message: 'Carta adquirida com sucesso!',
-//       position: 'top-left',
-//       color: 'success',
-//       });
-//     })
-//     .catch(() => {
-//         reset()
-//         toaster.error('Falha ao adquirir o card!');
-//     })
-//     .finally(() => {isBuyingCard.value = false});
-// }
+const deleteTheUser = (cardId: string) => {
+  isDeletingCard.value = true;
+  usersCrud.deleteUser(cardId)
+    .then(() => {
+      notify({
+      message: 'Usuário deletado com sucesso!',
+      position: 'top-left',
+      color: 'success',
+      });
+    })
+    .catch(() => {
+        reset()
+        toaster.error('Falha ao deletar o usuário!');
+    })
+    .finally(() => {isDeletingCard.value = false});
+    cardIdToDelete.value = '';
+}
 
 onMounted(() => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -261,6 +262,7 @@ const changePage = (page: number) => {
             :message="deleteMessage"
             blur
             :mobileFullscreen=false
+            @ok="deleteTheUser(cardIdToDelete)"
             >
         </VaModal>
     </div>

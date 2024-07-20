@@ -4,12 +4,13 @@ import axiosInstance from "../api/axios";
 class userAutenticationService {
     urlBase = apiService.autentication;
     
-    getUser({ name, email, password }: { name: string; email: string; password: string }) {
-        return axiosInstance.get(`${this.urlBase}/register`, { name, email, password });
+    getUser({ userId }: { userId: number; }) {
+        return axiosInstance.get(`${this.urlBase}/user/${userId}`);
     }
 
-    getUsers({ name, email, password }: { name: string; email: string; password: string }) {
-        return axiosInstance.get(`${this.urlBase}/register`, { name, email, password });
+    getUsers({ page = 1, per_page = 6 }: { page?: number; per_page?: number; } = {}) {
+        const query = `?page=${page}&per_page=${per_page}`;
+        return axiosInstance.get(`${this.urlBase}/users${query}`);
     }
 }
 

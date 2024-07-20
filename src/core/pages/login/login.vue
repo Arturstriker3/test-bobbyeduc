@@ -29,11 +29,11 @@ const submit = () => {
   isLoading.value = true;
   autenticationService.login({email: form.value.email, password: form.value.password})
     .then((response) => {
-        const { token, user } = response.data;
+        const { token } = response.data;
 
-        store.login(user, token);
+        store.login(token);
 
-        toaster.success(`Usuário ${user.name} logado com sucesso!`);
+        toaster.success(`Usuário logado com sucesso!`);
         router.push('/');
     })
     .catch(() => {

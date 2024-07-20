@@ -131,12 +131,14 @@ const projectName = ref('BobbyEduc');
                 />
                 {{ page.name }}
             </li>
-            <li  v-if="userAuth.GetIsAuth" class='flex justify-center w-full py-4 hover:bg-slate-300' @click="handleLogout">
+            <li  v-if="userAuth.GetIsAuth" class='flex items-center w-full py-4 hover:bg-slate-300' @click="handleLogout">
               <VaIcon
-                  :name="'logout'"
-                  color="#ffffff"
-                  :size="30"
-                />
+              class="ml-4 mr-2"
+                :name="'logout'"
+                color="#ffffff"
+                size="large"
+              />
+              Sair
             </li>
           </ul>
         </button>

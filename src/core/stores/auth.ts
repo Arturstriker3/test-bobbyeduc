@@ -22,7 +22,6 @@ export const userAuthStore = defineStore("auth", {
         },
         logout() {
 
-            this.$state.user = null;
             this.$state.accessToken = null;
             localStorage.removeItem('accessToken');
             this.$state.isAuth = false;

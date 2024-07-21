@@ -4,22 +4,24 @@ import { ref, onMounted, watch, computed } from 'vue';
 import usersCrud from "@/core/services/usersCrud";
 import { createToaster } from "@meforma/vue-toaster";
 import { useToast } from 'vuestic-ui'
-import { useRouter } from 'vue-router';
+import EmailUtils from '@/core/utils/email.utils';
 
 const toaster = createToaster();
-const { notify } = useToast()
-const router = useRouter();
+const { notify } = useToast();
 const isLoading = ref(false);
 const isDeletingCard = ref(false);
 const showDeleteModal = ref(false);
 const showEditModal = ref(false);
 
-const { reset } = useForm('formRef')
-const maxLengthToInputs = 100
+const { reset } = useForm('formRef',)
+const maxLengthToInputs = 50
 type FormField = 'cardText';
 
 const form = ref({
-    cardText: '',
+  cardText: '',
+  firstName: '',
+  lastName: '',
+  email: '',
 })
 
 type Card = {
@@ -47,7 +49,14 @@ const cardNameToDelete = ref('');
 const deleteMessage = computed(() => 
     `Você tem certeza que deseja deletar o usuário ${cardNameToDelete.value}? Essa ação não poderá ser desfeita.`
 );
-const cardToEdit = ref({} as Card);
+const cardToEdit = ref({
+    id: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    avatar: '',
+    loaded: false,
+} as Card);
 
 watch(form, () => {
   (Object.keys(form.value) as FormField[]).forEach((field) => {
@@ -116,7 +125,8 @@ const openCardDeleteModalConfirm = (cardId: string, cardFirstName: string, cardL
 
 const openCardEditModalConfirm = (cardId: string) => {
   showEditModal.value = true;
-  cardToEdit.value = cardsToShow.value.find(card => card.id === cardId) as Card;
+  const selectedCard = cardsToShow.value.find(card => card.id === cardId) as Card;
+  cardToEdit.value = { ...selectedCard };
 }
 
 const filteredCards = computed(() => {
@@ -130,6 +140,38 @@ const filteredCards = computed(() => {
 
 const changePage = (page: number) => {
   getData(page);
+}
+
+const maskedValueFirstName = computed({
+  get() {
+    return cardToEdit.value.first_name
+  },
+  set(v) {
+    cardToEdit.value.first_name = v.slice(0, 25)
+  }
+})
+
+const maskedValueLastName = computed({
+  get() {
+    return cardToEdit.value.last_name
+  },
+  set(v) {
+    cardToEdit.value.last_name = v.slice(0, 25)
+  }
+})
+
+const maskedValueEmail = computed({
+  get() {
+    return cardToEdit.value.email
+  },
+  set(v) {
+    cardToEdit.value.email = v.slice(0, 50)
+  }
+})
+
+const validateEmail = (value: string) => {
+  if (!EmailUtils.isValid(value)) return 'Email inválido!';
+  return true;
 }
 
 </script>
@@ -150,7 +192,7 @@ const changePage = (page: number) => {
                       :rules="[validateLength]"
                       label="Pesquisar"
                       :disabled="isLoading"
-                      :max-length="100"
+                      :max-length=maxLengthToInputs
                       counter
                       @input="truncateInput('cardText')"
                   />
@@ -282,14 +324,45 @@ const changePage = (page: number) => {
             @ok="deleteTheUser(cardIdToDelete)"
             >
             <div class="min-h-full" >
-              <div class="flex justify-center items-center" >
-                <h3 class="font-medium flex flex-row items-center gap-1 text-2xl ">
-                  Editar <p class="font-semibold" >{{cardToEdit.first_name}} {{cardToEdit.last_name}}</p>
+              <div class="flex justify-center items-center mb-4" >
+                <h3 class="font-medium flex flex-row items-center gap-2 text-2xl ">
+                  Editando: <p class="font-semibold" >{{cardToEdit.first_name}} {{cardToEdit.last_name}}</p>
                 </h3>
               </div>
-              <div>
-                
-              </div>
+              <VaForm ref="editFormRef" class="flex flex-col w-full gap-2 justify-center items-center">
+                <VaInput
+                  v-model="maskedValueFirstName"
+                  :rules="[validateLength]"
+                  label="Primeiro Nome"
+                  :disabled="isLoading"
+                  :max-length="25"
+                  counter
+                  class="w-full md:w-2/4"
+                  strict-bind-input-value
+                />
+
+                <VaInput
+                  v-model="maskedValueLastName"
+                  :rules="[validateLength]"
+                  label="Último Nome"
+                  :disabled="isLoading"
+                  :max-length="25"
+                  counter
+                  class="w-full md:w-2/4"
+                  strict-bind-input-value
+                />
+
+                <VaInput
+                  v-model="maskedValueEmail"
+                  :rules="[validateLength, validateEmail]"
+                  label="Último Nome"
+                  :disabled="isLoading"
+                  :max-length="50"
+                  counter
+                  class="w-full md:w-2/4"
+                  strict-bind-input-value
+                />
+              </VaForm>
             </div>
         </VaModal>
     </div>

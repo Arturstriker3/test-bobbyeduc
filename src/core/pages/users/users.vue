@@ -3,15 +3,16 @@ import { useForm } from 'vuestic-ui';
 import { ref, onMounted, watch, computed } from 'vue';
 import usersCrud from "@/core/services/usersCrud";
 import { createToaster } from "@meforma/vue-toaster";
-import dateUtils from '@/core/utils/date.utils';
 import { useToast } from 'vuestic-ui'
+import { useRouter } from 'vue-router';
 
 const toaster = createToaster();
 const { notify } = useToast()
-
+const router = useRouter();
 const isLoading = ref(false);
 const isDeletingCard = ref(false);
 const showDeleteModal = ref(false);
+const showEditModal = ref(false);
 
 const { reset } = useForm('formRef')
 const maxLengthToInputs = 100
@@ -46,6 +47,7 @@ const cardNameToDelete = ref('');
 const deleteMessage = computed(() => 
     `Você tem certeza que deseja deletar o usuário ${cardNameToDelete.value}? Essa ação não poderá ser desfeita.`
 );
+const cardToEdit = ref({} as Card);
 
 watch(form, () => {
   (Object.keys(form.value) as FormField[]).forEach((field) => {
@@ -110,6 +112,11 @@ const openCardDeleteModalConfirm = (cardId: string, cardFirstName: string, cardL
   showDeleteModal.value = true;
   cardIdToDelete.value = cardId;
   cardNameToDelete.value = `${cardFirstName} ${cardLastName}`;
+}
+
+const openCardEditModalConfirm = (cardId: string) => {
+  showEditModal.value = true;
+  cardToEdit.value = cardsToShow.value.find(card => card.id === cardId) as Card;
 }
 
 const filteredCards = computed(() => {
@@ -211,6 +218,7 @@ const changePage = (page: number) => {
                                     <VaButton
                                     round
                                     :disabled="!card.loaded || isDeletingCard"
+                                    @click="openCardEditModalConfirm(card.id)"
                                     >
                                     <VaIcon
                                         :name="'edit'"
@@ -264,6 +272,25 @@ const changePage = (page: number) => {
             :mobileFullscreen=false
             @ok="deleteTheUser(cardIdToDelete)"
             >
+        </VaModal>
+        <VaModal
+            v-model="showEditModal"
+            ok-text="Confirmar"
+            cancel-text="Cancelar"
+            blur
+            fullscreen
+            @ok="deleteTheUser(cardIdToDelete)"
+            >
+            <div class="min-h-full" >
+              <div class="flex justify-center items-center" >
+                <h3 class="font-medium flex flex-row items-center gap-1 text-2xl ">
+                  Editar <p class="font-semibold" >{{cardToEdit.first_name}} {{cardToEdit.last_name}}</p>
+                </h3>
+              </div>
+              <div>
+                
+              </div>
+            </div>
         </VaModal>
     </div>
 </template>

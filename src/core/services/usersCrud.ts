@@ -13,8 +13,13 @@ class userAutenticationService {
         return axiosInstance.get(`${this.urlBase}/users${query}`);
     }
 
-    editUser(userId: string) {
-        return axiosInstance.put(`${this.urlBase}/users/${userId}`  );
+    editUser(userId: string, userFirstName: string, userLastName: string, userEmail: string) {
+        const userInfo = {
+            first_name: userFirstName,
+            last_name: userLastName,
+            email: userEmail
+        };
+        return axiosInstance.put(`${this.urlBase}/users/${userId}`, userInfo);
     }
 
     deleteUser(userId: string) {

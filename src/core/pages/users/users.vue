@@ -174,6 +174,23 @@ const validateEmail = (value: string) => {
   return true;
 }
 
+const updateTheUser = () => {
+  isDeletingCard.value = true;
+  usersCrud.editUser(cardToEdit.value.id, cardToEdit.value.first_name, cardToEdit.value.last_name, cardToEdit.value.email)
+    .then(() => {
+      notify({
+      message: 'Usuário editado com sucesso!',
+      position: 'top-left',
+      color: 'success',
+      });
+    })
+    .catch(() => {
+        reset()
+        toaster.error('Falha ao editar o usuário!');
+    })
+    .finally(() => {isDeletingCard.value = false});
+}
+
 </script>
 
 <template>
@@ -320,8 +337,8 @@ const validateEmail = (value: string) => {
             ok-text="Confirmar"
             cancel-text="Cancelar"
             blur
-            fullscreen
-            @ok="deleteTheUser(cardIdToDelete)"
+            :mobileFullscreen=true
+            @ok="updateTheUser()"
             >
             <div class="min-h-full" >
               <div class="flex justify-center items-center mb-4" >
@@ -355,8 +372,8 @@ const validateEmail = (value: string) => {
                 <VaInput
                   v-model="maskedValueEmail"
                   :rules="[validateLength, validateEmail]"
-                  label="Último Nome"
-                  :disabled="isLoading"
+                  label="Email"
+                  :disabled="true"
                   :max-length="50"
                   counter
                   class="w-full md:w-2/4"

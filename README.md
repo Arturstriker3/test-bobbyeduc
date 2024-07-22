@@ -41,12 +41,22 @@ npm run dev
 
 **Identidade Visual Web**
 <div align="center">
-<img src="https://github.com/Arturstriker3/test-inmeta/assets/59231364/4b949bdf-19f3-4cad-a204-f070f83f40d0" width="auto" height="auto" />
+<img src="https://github.com/user-attachments/assets/ee44ae55-6a39-48ec-93ce-141f09333c8d" width="auto" height="auto" />
+</div>
+<br/>
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/71bb7443-31de-4325-9507-a8ba6b86c6f2" width="auto" height="auto" />
 </div>
 <br/>
 
 **Identidade Visual Mobile**
 <div align="center">
-<img src="https://github.com/Arturstriker3/test-inmeta/assets/59231364/4b949bdf-19f3-4cad-a204-f070f83f40d0" width="auto" height="auto" />
+<img src="https://github.com/user-attachments/assets/de52ddb1-d618-43be-91e8-328acfd3b26e" width="auto" height="auto" />
+</div>
+<br/>
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/62d2d737-cdb1-48d6-a9fe-0dbe48d922ff" width="auto" height="auto" />
 </div>
 <br/>

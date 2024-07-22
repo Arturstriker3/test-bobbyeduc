@@ -22,8 +22,6 @@ const getData = () => {
       updateBarChart(users);
       updatePieChartByFirstName();
       updatePieChartByLastName();
-
-      console.log(firstNames);
     })
     .catch(() => {
       toaster.error('Falha ao carregar os usuários.');
@@ -52,7 +50,10 @@ const updateBarChart = (users: any[]) => {
 const updatePieChartByFirstName = () => {
   chartOptions2.value = {
     chart: {
-      type: 'pie'
+      type: 'pie',
+      height: '100%',
+      width: '100%',
+      stacked: true,
     },
     series: Object.values(firstNames.value),
     labels: Object.keys(firstNames.value),
@@ -64,14 +65,32 @@ const updatePieChartByFirstName = () => {
         fontWeight: 'bold',
         color: '#333'
       }
-    }
+    },
+    responsive: [{
+      breakpoint: 768,
+      options: {
+        chart: {
+          width: '90%'
+        }
+      }
+    }, {
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: '90%'
+        }
+      }
+    }]
   };
 };
 
 const updatePieChartByLastName = () => {
   chartOptions3.value = {
     chart: {
-      type: 'pie'
+      type: 'pie',
+      height: '100%',
+      width: '100%',
+      stacked: true,
     },
     series: Object.values(lastNames.value),
     labels: Object.keys(lastNames.value),
@@ -83,13 +102,31 @@ const updatePieChartByLastName = () => {
         fontWeight: 'bold',
         color: '#333'
       }
-    }
+    },
+    responsive: [{
+      breakpoint: 768,
+      options: {
+        chart: {
+          width: '90%'
+        }
+      }
+    }, {
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: '90%'
+        }
+      }
+    }]
   };
 };
 
 const chartOptions1 = ref({
   chart: {
-    type: 'bar'
+    type: 'bar',
+    height: '100%',
+    width: '100%',
+    stacked: true,
   },
   series: [{
     name: 'Total de Usuários',
@@ -106,12 +143,38 @@ const chartOptions1 = ref({
       fontWeight: 'bold',
       color: '#333'
     }
+  },
+  responsive: [{
+    breakpoint: 768,
+    options: {
+      chart: {
+        width: '400px'
+      }
+    }
+  }, {
+    breakpoint: 480,
+    options: {
+      chart: {
+        width: '350px'
+      }
+    }
+  }, {
+    breakpoint: 380,
+    options: {
+      chart: {
+        width: '250px'
+      }
+    }
   }
+  ]
 });
 
 const chartOptions2 = ref<{
   chart: {
-    type: 'pie';
+    type: 'pie',
+    height: '100%',
+    width: '100%',
+    stacked: true,
   };
   series: number[];
   labels: string[];
@@ -124,9 +187,20 @@ const chartOptions2 = ref<{
       color: string;
     }
   };
+  responsive: {
+    breakpoint: number;
+    options: {
+      chart: {
+        width: string;
+      }
+    }
+  }[];
 }>({
   chart: {
-    type: 'pie'
+    type: 'pie',
+    height: '100%',
+    width: '100%',
+    stacked: true,
   },
   series: [],
   labels: [],
@@ -138,12 +212,30 @@ const chartOptions2 = ref<{
       fontWeight: 'bold',
       color: '#333'
     }
-  }
+  },
+  responsive: [{
+    breakpoint: 768,
+    options: {
+      chart: {
+        width: '600px'
+      }
+    }
+  }, {
+    breakpoint: 480,
+    options: {
+      chart: {
+        width: '400px'
+      }
+    }
+  }]
 });
 
 const chartOptions3 = ref<{
   chart: {
-    type: 'pie';
+    type: 'pie',
+    height: '100%',
+    width: '100%',
+    stacked: true,
   };
   series: number[];
   labels: string[];
@@ -156,9 +248,20 @@ const chartOptions3 = ref<{
       color: string;
     }
   };
+  responsive: {
+    breakpoint: number;
+    options: {
+      chart: {
+        width: string;
+      }
+    }
+  }[];
 }>({
   chart: {
-    type: 'pie'
+    type: 'pie',
+    height: '100%',
+    width: '100%',
+    stacked: true,
   },
   series: [],
   labels: [],
@@ -170,7 +273,22 @@ const chartOptions3 = ref<{
       fontWeight: 'bold',
       color: '#333'
     }
-  }
+  },
+  responsive: [{
+    breakpoint: 768,
+    options: {
+      chart: {
+        width: '600px'
+      }
+    }
+  }, {
+    breakpoint: 480,
+    options: {
+      chart: {
+        width: '400px'
+      }
+    }
+  }]
 });
 
 onMounted(() => {
@@ -181,32 +299,49 @@ onMounted(() => {
 
 
 <template>
-  <div class="">
-    <div class="w-full max-w-md">
-      <apexchart
-        width="500"
-        type="bar"
-        :options="chartOptions1"
-        :series="chartOptions1.series"
-      ></apexchart>
-    </div>
-    <div class="w-full max-w-md">
-      <apexchart
-        width="500"
-        type="pie"
-        :options="chartOptions2"
-        :series="chartOptions2.series"
-        :labels="chartOptions2.labels"
-      ></apexchart>
-    </div>
-    <div class="w-full max-w-md">
-      <apexchart
-        width="500"
-        type="pie"
-        :options="chartOptions3"
-        :series="chartOptions3.series"
-        :labels="chartOptions3.labels"
-      ></apexchart>
+  <div class="flex flex-col w-screen h-screen  py-4 gap-10" >
+    <div class="flex justify-center items-center" >
+      <VaCard class="mt-4 px-6 py-4 rounded-lg max-w-screen w-screen mx-auto" >
+        <div class="flex flex-col items-center justify-center" >
+          <p class="text-center text-lg font-semibold" >Dashboard</p>
+        </div>
+        <div class="mb-6">
+          <VaDivider />
+        </div>
+        <div v-if="isLoading" class="flex justify-center items-center">
+          <VaProgressCircle indeterminate
+          size="15rem"
+          />
+        </div>
+        <div v-else class="mt-10 w-fit mx-auto grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-3 justify-center items-center gap-y-16 gap-x-16 mb-10" >
+          <div class="w-full order-1 lg:order-2">
+            <apexchart
+              width="450"
+              type="bar"
+              :options="chartOptions1"
+              :series="chartOptions1.series"
+            ></apexchart>
+          </div>
+          <div class="w-full order-2 lg:order-1">
+            <apexchart
+              width="450"
+              type="pie"
+              :options="chartOptions2"
+              :series="chartOptions2.series"
+              :labels="chartOptions2.labels"
+            ></apexchart>
+          </div>
+          <div class="w-full order-3">
+            <apexchart
+              width="450"
+              type="pie"
+              :options="chartOptions3"
+              :series="chartOptions3.series"
+              :labels="chartOptions3.labels"
+            ></apexchart>
+          </div>
+        </div>
+      </VaCard>
     </div>
   </div>
 </template>

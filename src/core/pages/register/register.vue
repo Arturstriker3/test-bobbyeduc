@@ -24,10 +24,10 @@ type FormField = 'name' | 'email' | 'password' | 'confirmPassword';
 const { isValid, validate, reset, resetValidation } = useForm('formRef')
 const router = useRouter();
 const form = ref({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    name: 'Eve',
+    email: 'eve.holt@reqres.in',
+    password: 'pistol',
+    confirmPassword: 'pistol',
 })
 
 const goTo = (path: string) => {
@@ -36,7 +36,7 @@ const goTo = (path: string) => {
 
 const submit = () => {
   isLoading.value = true;
-  autenticationService.register({ name: form.value.name, email: form.value.email, password: form.value.password})
+  autenticationService.register({ email: form.value.email, password: form.value.password})
     .then(() => {
         toaster.success(`Nova conta cadastrada com sucesso!`);
         isSubmited.value = true

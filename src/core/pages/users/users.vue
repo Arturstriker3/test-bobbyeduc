@@ -287,7 +287,7 @@ const updateTheUser = () => {
           <VaCard class="px-6 py-4 rounded-lg w-full mx-auto" >
             <section id="Users"
             class="mt-10 w-fit mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4   justify-items-center justify-center gap-y-16 gap-x-14 mb-10">
-              <div v-for="card in filteredCards" :key="card.id" class="w-72 bg-slate-50 shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl border border-gray-300">
+              <div v-for="card in filteredCards" :key="card.id" class="w-72 bg-slate-50 shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl border border-gray-300 fade-in">
                 <div class="text-center py-2">
                   <p class="text-lg font-bold text-black truncate block capitalize">{{ card.first_name }}</p>
                 </div>
@@ -471,3 +471,22 @@ const updateTheUser = () => {
     </VaModal>
   </div>
 </template>
+
+<style scoped >
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.9s ease-out;
+}
+
+</style>

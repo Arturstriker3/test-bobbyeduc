@@ -1,4 +1,4 @@
-# Desafio Técnico: Bobby-Solucoes-Educativas
+# Desafio Técnico: Bobby Solucoes Educativas
 
 ## Clonar Repositório
 ```

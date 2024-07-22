@@ -1,9 +1,4 @@
-# Desafio Técnico: Aplicativo Web Vueduelist
-
-## Abrir Api para desativar hibernação
-```
-https://cards-marketplace-api.onrender.com/
-```
+# Desafio Técnico: Bobby-Solucoes-Educativas
 
 ## Clonar Repositório
 ```
@@ -31,7 +26,8 @@ npm run dev
 
  **Observações**
  
-* Todo serviço que da aplicação que se comunica com os endpoints da API simulando uma ação do CRUD, a API responde de volta mas as informações obtidadas delas são estáticas.
+* Para instalar as dependências do projeto precisa ter instalado o Node.js na máquina.
+* Todo serviço que da aplicação que se comunica com os endpoints da API simulando uma ação do CRUD, a API responde de volta mas os dados dela são estáticos.
  
  **O que utilizei**
 * HTML e CSS;

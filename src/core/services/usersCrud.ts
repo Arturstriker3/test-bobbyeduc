@@ -2,7 +2,7 @@ import apiService from "../api/api-service";
 import axiosInstance from "../api/axios";
 
 class userAutenticationService {
-    urlBase = apiService.autentication;
+    urlBase = apiService.usersCrud;
     
     getUser(userId: string) {
         return axiosInstance.get(`${this.urlBase}/users/${userId}`);

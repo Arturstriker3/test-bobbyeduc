@@ -18,8 +18,8 @@ const isPasswordVisible = ref(false);
 const { isValid, validate, reset, resetValidation } = useForm('formRef')
 const router = useRouter();
 const form = ref({
-    email: '',
-    password: '',
+    email: 'eve.holt@reqres.in',
+    password: 'cityslicka',
 })
 
 const maxLengthToInputs = 50

@@ -39,7 +39,13 @@ npm run dev
 * Biblioteca Vue Router para Vue.js ;
 * Biblioteca Axios para integração via Api ;
 
-**Identidade Visual**
+**Identidade Visual Web**
+<div align="center">
+<img src="https://github.com/Arturstriker3/test-inmeta/assets/59231364/4b949bdf-19f3-4cad-a204-f070f83f40d0" width="auto" height="auto" />
+</div>
+<br/>
+
+**Identidade Visual Mobile**
 <div align="center">
 <img src="https://github.com/Arturstriker3/test-inmeta/assets/59231364/4b949bdf-19f3-4cad-a204-f070f83f40d0" width="auto" height="auto" />
 </div>

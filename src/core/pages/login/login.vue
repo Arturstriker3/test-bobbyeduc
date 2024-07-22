@@ -90,7 +90,7 @@ onMounted(() => {
             <VaInput
                 v-model="form.password"
                 :type="isPasswordVisible ? 'text' : 'password'"
-                :rules="[(value) => (value && value.length > 0) || 'Digite a sua senha!']"
+                :rules="[(value: any) => (value && value.length > 0) || 'Digite a sua senha!']"
                 label="Senha"
                 :disabled="isLoading"
                 :max-length="50"

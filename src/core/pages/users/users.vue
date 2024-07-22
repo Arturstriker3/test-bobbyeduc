@@ -12,6 +12,7 @@ const isLoading = ref(false);
 const isDeletingCard = ref(false);
 const showDeleteModal = ref(false);
 const showEditModal = ref(false);
+const showCreateModal = ref(false);
 
 const { reset } = useForm('formRef',)
 const maxLengthToInputs = 50
@@ -19,9 +20,6 @@ type FormField = 'cardText';
 
 const form = ref({
   cardText: '',
-  firstName: '',
-  lastName: '',
-  email: '',
 })
 
 type Card = {
@@ -112,6 +110,24 @@ const deleteTheUser = (cardId: string) => {
     cardIdToDelete.value = '';
 }
 
+const createTheUser = () => {
+  isDeletingCard.value = true;
+  usersCrud.createUser(cardToEdit.value.first_name, cardToEdit.value.last_name, cardToEdit.value.email)
+    .then(() => {
+      notify({
+      message: 'Usuário criado com sucesso!',
+      position: 'top-left',
+      color: 'success',
+      });
+    })
+    .catch(() => {
+        reset()
+        toaster.error('Falha ao criar o usuário!');
+    })
+    .finally(() => {isDeletingCard.value = false});
+    cardIdToDelete.value = '';
+}
+
 onMounted(() => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   getData(currentPage.value)
@@ -127,6 +143,14 @@ const openCardEditModalConfirm = (cardId: string) => {
   showEditModal.value = true;
   const selectedCard = cardsToShow.value.find(card => card.id === cardId) as Card;
   cardToEdit.value = { ...selectedCard };
+}
+
+const openCardCreateModalConfirm = () => {
+  showCreateModal.value = true;
+  cardToEdit.value.id = '';
+  cardToEdit.value.email = '';
+  cardToEdit.value.first_name = '';
+  cardToEdit.value.last_name = '';
 }
 
 const filteredCards = computed(() => {
@@ -203,7 +227,7 @@ const updateTheUser = () => {
               <div class="mb-6">
                 <VaDivider />
               </div>
-              <VaForm ref="formRef" class="flex flex-col w-full gap-2">
+              <VaForm ref="formRef" class="flex flex-row w-full gap-2 justify-center items-center ">
                   <VaInput
                       v-model="form.cardText"
                       :rules="[validateLength]"
@@ -212,9 +236,22 @@ const updateTheUser = () => {
                       :max-length=maxLengthToInputs
                       counter
                       @input="truncateInput('cardText')"
+                      class="w-full"
                   />
+                  <VaButton
+                    round
+                    :disabled="isLoading || isDeletingCard"
+                    @click="openCardCreateModalConfirm()"
+                    class="h-full"
+                    >
+                    <VaIcon
+                        :name="'add'"
+                        color="#ffffff"
+                        size="small"
+                    />
+                  </VaButton>
               </VaForm>
-              <div class="flex justify-end my-2" >
+              <div class="flex justify-end my-6" >
                 <VaButtonToggle
                     v-model="resultsPerPage"
                     size="small"
@@ -374,6 +411,56 @@ const updateTheUser = () => {
                   :rules="[validateLength, validateEmail]"
                   label="Email"
                   :disabled="true"
+                  :max-length="50"
+                  counter
+                  class="w-full md:w-2/4"
+                  strict-bind-input-value
+                />
+              </VaForm>
+            </div>
+        </VaModal>
+        <VaModal
+            v-model="showCreateModal"
+            ok-text="Confirmar"
+            cancel-text="Cancelar"
+            blur
+            :mobileFullscreen=true
+            @ok="createTheUser()"
+            >
+            <div class="min-h-full" >
+              <div class="flex justify-center items-center mb-4" >
+                <h3 class="font-medium flex flex-row items-center gap-2 text-2xl ">
+                  Criar Usuário
+                </h3>
+              </div>
+              <VaForm ref="editFormRef" class="flex flex-col w-full gap-2 justify-center items-center">
+                <VaInput
+                  v-model="maskedValueFirstName"
+                  :rules="[validateLength]"
+                  label="Primeiro Nome"
+                  :disabled="isLoading"
+                  :max-length="25"
+                  counter
+                  class="w-full md:w-2/4"
+                  strict-bind-input-value
+                />
+
+                <VaInput
+                  v-model="maskedValueLastName"
+                  :rules="[validateLength]"
+                  label="Último Nome"
+                  :disabled="isLoading"
+                  :max-length="25"
+                  counter
+                  class="w-full md:w-2/4"
+                  strict-bind-input-value
+                />
+
+                <VaInput
+                  v-model="maskedValueEmail"
+                  :rules="[validateLength, validateEmail]"
+                  label="Email"
+                  :disabled="isLoading"
                   :max-length="50"
                   counter
                   class="w-full md:w-2/4"

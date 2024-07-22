@@ -13,6 +13,15 @@ class userAutenticationService {
         return axiosInstance.get(`${this.urlBase}/users${query}`);
     }
 
+    createUser(userFirstName: string, userLastName: string, userEmail: string) {
+        const userInfo = {
+            first_name: userFirstName,
+            last_name: userLastName,
+            email: userEmail
+        };
+        return axiosInstance.post(`${this.urlBase}/users`, userInfo);
+    }
+
     editUser(userId: string, userFirstName: string, userLastName: string, userEmail: string) {
         const userInfo = {
             first_name: userFirstName,

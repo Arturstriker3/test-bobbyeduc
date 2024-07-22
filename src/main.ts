@@ -19,7 +19,23 @@ app.use(Toaster);
 
 app.use(pinia);
 
-app.use(createVuestic());
+app.use(
+    createVuestic({
+      config: {
+        colors: {
+          variables: {
+            primary: "#bbc415",
+            button: "#039be5",
+          },
+        },
+        components: {
+          VaButton: {
+            color: "button",
+          },
+        },
+      },
+    })
+  )
 
 app.use(VueApexCharts);
 

@@ -89,19 +89,24 @@ const projectName = ref('BobbyEduc');
 <template>
   <div class="w-screen h-screen ">
     <div class="sticky top-0 z-50" v-if="shouldShowNavbar">
-      <div class='flex justify-between py-6 px-6 lg:px-16 items-center bg-[#154EC1]'>
-        <div class="w-screen bg-[#154EC1] flex justify-between text-white items-center" >
-          <span class='text-xl font-sans font-bold'>
+      <div class='flex justify-between py-6 px-6 lg:px-16 items-center bg-[#bbc415]'>
+        <div class="w-screen bg-[#bbc415] flex justify-between text-white items-center" >
+          <span class='text-2xl font-sans font-bold'>
             {{ projectName }}
           </span>
           <ul class='hidden md:flex items-center space-x-5'>        
               <li v-for="page in filteredPages" :key="page.path" @click="navigateTo(page.path)">
-                  <VaButton>
-                    {{ page.name }}
+                  <VaButton
+                    color="#bbc415"
+                    text-color="#ffffff"
+                  >
+                  <p class="text-lg">{{ page.name }}</p>  
                   </VaButton>
               </li>
               <li v-if="userAuth.GetIsAuth" >
-                <VaButton @click="handleLogout">
+                <VaButton @click="handleLogout"
+                  color="#bbc415"
+                >
                   <VaIcon
                     :name="'logout'"
                     color="#ffffff"
@@ -117,12 +122,12 @@ const projectName = ref('BobbyEduc');
             <div class='w-6 h-1 bg-white'></div>
             <div class='w-6 h-1 bg-white'></div>
           </div>
-          <ul class='bg-[#154EC1] w-screen h-screen pb-10 absolute -top-full group-focus:top-0 right-0 duration-500 flex flex-col space-y-3 justify-start font-semibold text-lg' v-show="mobileMenuVisible">
+          <ul class='bg-[#bbc415] w-screen h-screen pb-10 absolute -top-full group-focus:top-0 right-0 duration-500 flex flex-col space-y-3 justify-start font-semibold text-lg' v-show="mobileMenuVisible">
             <button ref="closeMenuButton" class='px-10 py-8 relative ml-auto' @click="toggleMobileMenu">
               <div class='w-6 h-1 rotate-45 absolute bg-white'></div>
               <div class='w-6 h-1 -rotate-45 absolute bg-white'></div>
             </button>
-            <li v-for="page in filteredPages" :key="page.path" class='flex items-center w-full py-4 hover:bg-slate-300' @click="() => { navigateTo(page.path); toggleMobileMenu()}">
+            <li v-for="page in filteredPages" :key="page.path" class='flex items-center w-full py-4 hover:bg-slate-400' @click="() => { navigateTo(page.path); toggleMobileMenu()}">
                 <VaIcon
                   class="ml-4 mr-2"
                   :name="page.pageIcon"
@@ -131,7 +136,7 @@ const projectName = ref('BobbyEduc');
                 />
                 {{ page.name }}
             </li>
-            <li  v-if="userAuth.GetIsAuth" class='flex items-center w-full py-4 hover:bg-slate-300' @click="handleLogout">
+            <li  v-if="userAuth.GetIsAuth" class='flex items-center w-full py-4 hover:bg-slate-400' @click="handleLogout">
               <VaIcon
               class="ml-4 mr-2"
                 :name="'logout'"

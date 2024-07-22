@@ -15,4 +15,22 @@ body {
   font-family: 'Roboto', 'poppins',sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+  
+}
+
+.va-input-label {
+  color: black !important;
+}
+
+.va-toast {
+  cursor: pointer !important;
+}
+
+.va-toast__content {
+  color: white !important;
+  font-weight: 600;
+}
+
+.va-input-wrapper__field {
+  filter: brightness(0.6);
 }

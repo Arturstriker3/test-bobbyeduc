@@ -1,27 +1,40 @@
-# Repositório pronto para desenvolver aplicações Front End.
+# Desafio Técnico: Aplicativo Web Vueduelist
+
+## Abrir Api para desativar hibernação
+```
+https://cards-marketplace-api.onrender.com/
+```
 
 ## Clonar Repositório
 ```
-git clone https://github.com/Arturstriker3/Vue-Typescript-Tailwind.git NovoProjeto
+git clone https://github.com/Arturstriker3/test-bobbyeduc
 ```
 
-## Remover Referência Original
+## Abrir o teste
 ```
-rm -rf .git
-```
-
-## Inicializar um novo repositório Git:
-```
-git init
+cd .\test-bobbyeduc/
 ```
 
-### Vue/Typescript/Tailwind:
+## Instalação das Depêndencias do Projeto
+```
+npm install
+```
+
+### Compilar e rodar o Front
+```
+npm run dev
+```
+
+### Teste Prático Bobby Solucoes Educativas (2024)
  
- Esse repositório tem como foco aumentar a velocidade para produção de aplicações Front End já tendo arquitetura de pastas, utils e libs/packages modernos que utilizo diariamente.
+ Nesse projeto o foco foi desenvolver uma aplicação web simulando um CRUD simples com a API do https://reqres.in/ para simulação.
+
+ **Observações**
  
- **Packages presentes:**
-* Roboto, poppins, sans-serif;
-* Material Icons;
+* Todo serviço que da aplicação que se comunica com os endpoints da API simulando uma ação do CRUD, a API responde de volta mas as informações obtidadas delas são estáticas.
+ 
+ **O que utilizei**
+* HTML e CSS;
 * Tailwind;
 * Typescript;
 * FrameWork Vuejs;
@@ -29,3 +42,9 @@ git init
 * Biblioteca Pinia para Vue.js ;
 * Biblioteca Vue Router para Vue.js ;
 * Biblioteca Axios para integração via Api ;
+
+**Identidade Visual**
+<div align="center">
+<img src="https://github.com/Arturstriker3/test-inmeta/assets/59231364/4b949bdf-19f3-4cad-a204-f070f83f40d0" width="auto" height="auto" />
+</div>
+<br/>

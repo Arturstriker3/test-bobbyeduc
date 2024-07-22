@@ -7,6 +7,7 @@ import 'vuestic-ui/styles/typography.css';
 import { createPinia } from 'pinia';
 import router from './core/router/pages'
 import Toaster from "@meforma/vue-toaster";
+import VueApexCharts from "vue3-apexcharts";
 
 const app = createApp(App);
 
@@ -19,5 +20,7 @@ app.use(Toaster);
 app.use(pinia);
 
 app.use(createVuestic());
+
+app.use(VueApexCharts);
 
 app.mount("#app");

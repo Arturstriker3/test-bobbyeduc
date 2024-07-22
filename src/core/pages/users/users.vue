@@ -427,7 +427,7 @@ const updateTheUser = () => {
       :mobileFullscreen=true
       @ok="createTheUser()"
       >
-      <div class="min-h-full" >
+      <div class="min-h-full bg-slate-100 border rounded-lg p-2" >
         <div class="flex justify-center items-center mb-4" >
           <h3 class="font-medium flex flex-row items-center gap-2 text-2xl ">
             Criar Usuário
